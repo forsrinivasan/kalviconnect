@@ -1,0 +1,6 @@
+{
+  "name": "Kalvi Connect",
+  "description": "Global Mentors, Local Opportunity — Connecting youth in Tamil Nadu with global volunteers for structured 6-week mentorship.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

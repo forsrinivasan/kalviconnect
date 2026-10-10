@@ -1,0 +1,41 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global helper functions
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128;
+    }
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Test connection document
+    match /test/{docId} {
+      allow read, write: if true;
+    }
+
+    // Learners Collection
+    match /learners/{learnerId} {
+      allow read, write: if isValidId(learnerId);
+    }
+
+    // Mentors Collection
+    match /mentors/{mentorId} {
+      allow read, write: if isValidId(mentorId);
+    }
+
+    // Sessions Collection
+    match /sessions/{sessionId} {
+      allow read, write: if isValidId(sessionId);
+    }
+
+    // Safeguarding Reports Collection
+    match /safeguardingReports/{reportId} {
+      allow read, write: if isValidId(reportId);
+    }
+  }
+}

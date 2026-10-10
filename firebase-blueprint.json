@@ -1,0 +1,112 @@
+{
+  "entities": {
+    "Learner": {
+      "title": "Learner",
+      "description": "Student enrolled in the Kalvi Connect mentoring program",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "maxLength": 120 },
+        "age": { "type": "number" },
+        "district": { "type": "string", "maxLength": 80 },
+        "partnerInstitution": { "type": "string", "maxLength": 150 },
+        "trackId": { "type": "string", "enum": ["track-a", "track-b", "track-c"] },
+        "preferredLanguage": { "type": "string", "enum": ["tamil", "english", "bilingual"] },
+        "primaryGoal": { "type": "string", "maxLength": 500 },
+        "assignedMentorId": { "type": "string", "maxLength": 128 },
+        "cohortStartDate": { "type": "string", "maxLength": 30 },
+        "registrationStatus": { "type": "string", "enum": ["pending_approval", "approved", "rejected"] },
+        "registeredAt": { "type": "string", "maxLength": 30 },
+        "otpVerified": { "type": "boolean" },
+        "baselineCompleted": { "type": "boolean" },
+        "endlineCompleted": { "type": "boolean" }
+      },
+      "required": ["id", "name", "email", "district", "partnerInstitution", "trackId", "registrationStatus"]
+    },
+    "Mentor": {
+      "title": "Mentor",
+      "description": "Volunteer professional providing structured guidance",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "maxLength": 120 },
+        "role": { "type": "string", "maxLength": 120 },
+        "organization": { "type": "string", "maxLength": 150 },
+        "city": { "type": "string", "maxLength": 80 },
+        "country": { "type": "string", "maxLength": 80 },
+        "timezone": { "type": "string", "maxLength": 80 },
+        "timezoneLabel": { "type": "string", "maxLength": 80 },
+        "yearsExperience": { "type": "number" },
+        "vettingStatus": { "type": "string", "enum": ["verified", "pending", "review_required"] },
+        "registrationStatus": { "type": "string", "enum": ["pending_approval", "approved", "rejected"] },
+        "weeklyCommitmentHours": { "type": "number" },
+        "bio": { "type": "string", "maxLength": 1000 },
+        "codeOfConductAccepted": { "type": "boolean" },
+        "safeguardingTrainingCompleted": { "type": "boolean" },
+        "otpVerified": { "type": "boolean" },
+        "registeredAt": { "type": "string", "maxLength": 30 }
+      },
+      "required": ["id", "name", "email", "role", "city", "timezone", "vettingStatus", "registrationStatus"]
+    },
+    "MentoringSession": {
+      "title": "MentoringSession",
+      "description": "Scheduled or completed 45-minute mentoring session between learner and mentor",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "learnerId": { "type": "string", "maxLength": 128 },
+        "mentorId": { "type": "string", "maxLength": 128 },
+        "weekNumber": { "type": "number" },
+        "scheduledTimeUTC": { "type": "string", "maxLength": 50 },
+        "status": { "type": "string", "enum": ["upcoming", "completed", "cancelled"] },
+        "meetingLink": { "type": "string", "maxLength": 255 },
+        "durationMinutes": { "type": "number" },
+        "mentorNotes": { "type": "string", "maxLength": 2000 },
+        "cancellationReason": { "type": "string", "maxLength": 500 },
+        "cancelledBy": { "type": "string", "enum": ["coordinator", "learner", "mentor"] },
+        "learnerFeedbackRating": { "type": "number" },
+        "learnerFeedbackComments": { "type": "string", "maxLength": 1000 }
+      },
+      "required": ["id", "learnerId", "mentorId", "weekNumber", "scheduledTimeUTC", "status", "meetingLink"]
+    },
+    "SafeguardingReport": {
+      "title": "SafeguardingReport",
+      "description": "Confidential incident report or rematch request handled by Lead Coordinator",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "dateReported": { "type": "string", "maxLength": 30 },
+        "reporterRole": { "type": "string", "maxLength": 30 },
+        "reporterName": { "type": "string", "maxLength": 100 },
+        "learnerId": { "type": "string", "maxLength": 128 },
+        "mentorId": { "type": "string", "maxLength": 128 },
+        "category": { "type": "string", "enum": ["inappropriate_conduct", "unreliable_attendance", "communication_boundary", "rematch_request", "other"] },
+        "description": { "type": "string", "maxLength": 2000 },
+        "status": { "type": "string", "enum": ["open", "investigating", "resolved"] },
+        "resolutionNotes": { "type": "string", "maxLength": 2000 },
+        "confidentialLead": { "type": "string", "maxLength": 100 }
+      },
+      "required": ["id", "dateReported", "learnerId", "category", "description", "status"]
+    }
+  },
+  "firestore": {
+    "/learners/{learnerId}": {
+      "schema": "Learner",
+      "description": "Collection of all enrolled learners across Tamil Nadu"
+    },
+    "/mentors/{mentorId}": {
+      "schema": "Mentor",
+      "description": "Collection of all global volunteer mentors"
+    },
+    "/sessions/{sessionId}": {
+      "schema": "MentoringSession",
+      "description": "Scheduled and completed dual-timezone mentoring sessions"
+    },
+    "/safeguardingReports/{reportId}": {
+      "schema": "SafeguardingReport",
+      "description": "Confidential safety and rematch escalation reports"
+    }
+  }
+}
